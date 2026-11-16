@@ -1,4 +1,4 @@
-# 02 - Zero-Trust Two-Tier Virtual Network (Azure Portal / ClickOps)
+# 02 - Zero-Trust Two-Tier Virtual Network 
 
 ## 1. Executive Summary
 This project demonstrates the manual provisioning, network segmentation, and security validation of an isolated two-tier environment in Microsoft Azure using the **Azure Portal**. The architecture enforces zero-trust east-west traffic controls between a web tier and a database tier using **Network Security Groups (NSGs)** and **Application Security Groups (ASGs)**, while eliminating public IP attack surfaces via **Azure Bastion**.
