@@ -34,14 +34,11 @@ Provisioned `vnet-core-prod` (`10.0.0.0/16`) in **South Africa North** and segme
 | `snet-db` | `10.0.2.0/24` | `vm-db-01` (`10.0.2.4`) |
 | `AzureBastionSubnet` | `10.0.3.0/26` | Azure Bastion Host |
 
-![Virtual Network Subnets](./screenshots/01-vnet-subnets.png)
 
 ---
 
 ### Step 2: Application Security Group (ASG) Assignment
 Created `asg-web-servers` and `asg-db-servers`, then attached each Ubuntu VM's primary NIC to its respective ASG under **Networking > Application security groups**.
-
-![ASG Assignment](./screenshots/02-asg-assignment.png)
 
 ---
 
@@ -53,14 +50,12 @@ Created `nsg-web-tier` and `nsg-db-tier` and associated them directly at the **s
 | **100** | `Allow-Web-To-DB-SQL` | `asg-web-servers` | `asg-db-servers` | `3306` (TCP) | **Allow** |
 | **4000** | `Deny-All-Other-VNet-Traffic` | `VirtualNetwork` | `Any` | `*` (Any) | **Deny** |
 
-![NSG Inbound Rules](./screenshots/03-nsg-rules.png)
 
 ---
 
 ### Step 4: Secure Access via Azure Bastion
 Deployed Azure Bastion into `AzureBastionSubnet` and established an authenticated browser-based SSH session to `vm-web-01` (`10.0.1.4`).
 
-![Azure Bastion Session](./screenshots/04-bastion-session.png)
 
 ---
 
@@ -70,9 +65,6 @@ Executed network tests from `vm-web-01` targeting `vm-db-01` (`10.0.2.4`) to ver
 1. **ICMP Ping Test (`ping 10.0.2.4`):** **100% Packet Loss (Blocked)** — Confirmed that Priority `4000` overrides Azure's default `AllowVnetInBound` rule and drops unauthorized protocols.
 2. **MySQL Port Test (`nc -zv -w 3 10.0.2.4 3306`):** **Succeeded** — Verified against a listener on `vm-db-01` that Priority `100` evaluates first and permits TCP `3306` between `asg-web-servers` and `asg-db-servers`.
 
-![Security Validation Output](./screenshots/05-validation-test.png)
 
 ---
 
-## 4. Resource Cleanup
-After verifying the security rules and capturing documentation evidence, the `rg-azure-net-lab` resource group was deleted via the Azure Portal to decommission Azure Bastion and compute resources, preventing ongoing billing.
